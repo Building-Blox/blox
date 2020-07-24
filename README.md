@@ -21,6 +21,7 @@ const blox = new Blox(gulp, {
 ````
 
 Then build your project out with the following structure:
+````
 ...
 |--src
     |--assets
@@ -41,6 +42,7 @@ Then build your project out with the following structure:
                 |--home.scss
 |--gulpfile.js
 ...
+````
 
 ## Data
 Data in ```db.json``` will available in the Nunjucks template files via the ```blox.db``` global object.
