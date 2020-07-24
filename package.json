@@ -1,9 +1,17 @@
 {
-  "name": "blox",
+  "name": "@building-blox/blox",
   "description": "Blox - a nice way to build static websites.",
   "version": "0.0.1",
   "author": "Richard Lovell",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/building-blox/blox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/building-blox/blox/issues"
+  },
+  "homepage": "https://github.com/building-blox/blox/#readme",
   "main": "index.js",
   "devDependencies": {
     "chalk": "^4.1.0",

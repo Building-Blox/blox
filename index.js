@@ -35,7 +35,6 @@
   const info = chalk.keyword("lightblue");
   const success = chalk.keyword("lightgreen");
   const fsUtils = require("./util/fs-util");
-  const config = require("./lib/config");
   const constants = require("./lib/constants");
   const templates = require("./lib/templates");
   const scripts = require("./lib/scripts");
@@ -52,7 +51,7 @@
       this.globalData;
       this.assignTasks();
       this.nunjucksOptions = {
-        path: [config.paths.project, "build/css/"],
+        path: [constants.paths.project, "build/css/"],
       };
     }
 
@@ -90,12 +89,12 @@
      */
     async init() {
       return new Promise(async (resolve, reject) => {
-        this.dirs = await fsUtils.getDirectories(config.paths.pages);
-        fs.readdir(config.paths.data, (err, files) => {
+        this.dirs = await fsUtils.getDirectories(constants.paths.pages);
+        fs.readdir(constants.paths.data, (err, files) => {
           if (err) reject(err);
           let dataArray = [];
           files.forEach((file) => {
-            let content = require(`${config.paths.data}/${file}`);
+            let content = require(`${constants.paths.data}/${file}`);
             if (file === "db.json") {
               content = { db: content };
             }
@@ -130,8 +129,8 @@
     async doGlobalScripts() {
       await scripts.doScripts({
         gulp: this.gulp,
-        source: `${path.join(__dirname, "../")}src/assets/js/index.js`,
-        dest: `${path.join(__dirname, "../")}public/js`,
+        source: `${path.join(__dirname, "../../")}src/assets/js/index.js`,
+        dest: `${path.join(__dirname, "../../")}public/js`,
       });
     }
 
@@ -164,7 +163,7 @@
       for (let i = 0; i < this.dirs.length; i++) {
         const dir = this.dirs[i];
         let subdirs = await fsUtils.getDirectories(
-          config.paths.pages + "/" + dir
+          constants.paths.pages + "/" + dir
         );
         // find a subfolder with the name "detail"
         for (let i = 0; i < subdirs.length; i++) {
