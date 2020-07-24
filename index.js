@@ -32,12 +32,11 @@
   const argv = require("yargs").argv;
   const path = require("path");
   const fs = require("fs");
-  const info = chalk.keyword("lightblue");
-  const success = chalk.keyword("lightgreen");
   const fsUtils = require("./util/fs-util");
   const constants = require("./lib/constants");
   const templates = require("./lib/templates");
   const scripts = require("./lib/scripts");
+  const hooks = require("./lib/hooks");
 
   /**
    * Blox class. Prepares building blocks for static site generation including pages,
@@ -47,7 +46,7 @@
     constructor(gulp, options = {}) {
       this.gulp = gulp;
       this.options = options;
-      this.hooks = {};
+      // this.hooks = {};
       this.globalData;
       this.assignTasks();
       this.nunjucksOptions = {
@@ -56,8 +55,8 @@
     }
 
     addAction(name, action) {
-      if (!this.hooks[name]) this.hooks[name] = [];
-      this.hooks[name].push(action);
+      if (!hooks.names[name]) hooks.names[name] = [];
+        hooks.names[name].push(action);
     }
 
     /**
@@ -72,10 +71,10 @@
       this.gulp.task("blox:dev", (done) => self.gulp.series("blox:run")(done));
 
       this.gulp.task("blox:load", async function (done) {
-        await self.loadDataHook();
+        await hooks.loadDataHook(this.options, this.globalData);
         done();
       });
-      
+
       this.gulp.task("blox:run", function (done) {
         self.run().then(function () {
           done();
@@ -95,7 +94,7 @@
           let dataArray = [];
           files.forEach((file) => {
             let content = require(`${constants.paths.data}/${file}`);
-            if (file === "db.json") {
+            if (file === constants.dbFile) {
               content = { db: content };
             }
             dataArray.push(content);
@@ -119,7 +118,7 @@
     async run() {
       await Promise.all([
         await this.init(),
-        await this.doThemeHook(),
+        await hooks.doThemeHook(this.options, this.globalData),
         await scripts.doComponentScripts(),
         await this.doGlobalScripts(),
         await this.doTemplates(),
@@ -181,49 +180,6 @@
           }
         }
       }
-    }
-
-   
-    // Hooks
-
-    doThemeHook() {
-      return new Promise(async (resolve) => {
-        this.doHook(constants.hooks.doTheme);
-        resolve();
-      });
-    }
-
-    loadDataHook() {
-      return new Promise(async (resolve) => {
-        let hasDataFile = await fsUtils.hasDataFile();
-        if (hasDataFile) {
-          if (!this.options.dataUrl && !argv.dataUrl) {
-            throw new Error("Blox: No data URL provided");
-          }
-          console.log(
-            info("Blox: Fetching remote data from " + this.options.dataUrl)
-          );
-          this.doHook(constants.hooks.loadData);
-        } else {
-          console.log(info("Blox: Data not loaded - no db.json file found"));
-          resolve();
-        }
-        
-        resolve();
-      });
-    }
-
-    doHook(hookName) {
-      return new Promise(async (resolve) => {
-        if (this.hooks[hookName]) {
-          let config = {
-            options: this.options,
-            globalData: this.globalData,
-          };
-          this.hooks[hookName].forEach((action) => action(config));
-        }
-        resolve();
-      });
     }
   }
 

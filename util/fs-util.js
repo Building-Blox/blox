@@ -33,7 +33,7 @@ module.exports = {
             let hasData = false;
             for (let i = 0; i < files.length; i++) {
               const file = files[i];
-              if (file === "db.json") {
+              if (file === constants.dbFile) {
                 hasData = true;
                 break;
               }
