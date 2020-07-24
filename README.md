@@ -45,7 +45,7 @@ Then build your project out with the following structure:
 ````
 
 ## Data
-Data in ```db.json``` will available in the Nunjucks template files via the ```blox.db``` global object.
+Data in ```db.json``` will available in the Nunjucks template files via the ```blox.db``` global object. Any data from JSON files added to the ```data``` directory will be added to the global ```blox``` object.
 
 ### Actions
 Actions allow you to be able to create your own implementations of some common use cases. Currently, you can add actions for:
