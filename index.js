@@ -28,8 +28,7 @@
 (function () {
   "use strict";
 
-  const chalk = require("chalk");
-  const argv = require("yargs").argv;
+
   const path = require("path");
   const fs = require("fs");
   const fsUtils = require("./util/fs-util");
@@ -71,7 +70,7 @@
       this.gulp.task("blox:dev", (done) => self.gulp.series("blox:run")(done));
 
       this.gulp.task("blox:load", async function (done) {
-        await hooks.loadDataHook(this.options, this.globalData);
+        await hooks.loadDataHook(self.options, self.globalData);
         done();
       });
 
@@ -128,8 +127,8 @@
     async doGlobalScripts() {
       await scripts.doScripts({
         gulp: this.gulp,
-        source: `${path.join(__dirname, "../../")}src/assets/js/index.js`,
-        dest: `${path.join(__dirname, "../../")}public/js`,
+        source: `${path.join(__dirname, "../../../")}src/assets/js/index.js`,
+        dest: `${path.join(__dirname, "../../../")}public/js`,
       });
     }
 
