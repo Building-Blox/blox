@@ -35,6 +35,8 @@
   const constants = require("./lib/constants");
   const templates = require("./lib/templates");
   const scripts = require("./lib/scripts");
+  const images = require("./lib/images");
+  const styles = require("./lib/styles");
   const hooks = require("./lib/hooks");
 
   /**
@@ -45,6 +47,7 @@
     constructor(gulp, options = {}) {
       this.gulp = gulp;
       this.options = options;
+      this.options.homePage = this.options.homePage ? this.options.homePage : constants.defaultHomePage;
       this.globalData;
       this.assignTasks();
       this.nunjucksOptions = {
@@ -119,6 +122,9 @@
         await hooks.doThemeHook(this.options, this.globalData),
         await scripts.doComponentScripts(),
         await this.doGlobalScripts(),
+        await styles.doComponents({ gulp: this.gulp }),
+        await images.doComponents({ gulp: this.gulp }),
+        await images.doPartials({ gulp: this.gulp }),
         await this.doTemplates(),
       ]);
     }
