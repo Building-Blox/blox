@@ -1,7 +1,7 @@
 {
   "name": "@building-blox/blox",
   "description": "Blox - a nice way to build static websites.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Richard Lovell",
   "license": "MIT",
   "repository": {

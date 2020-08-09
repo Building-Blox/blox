@@ -45,7 +45,6 @@
     constructor(gulp, options = {}) {
       this.gulp = gulp;
       this.options = options;
-      // this.hooks = {};
       this.globalData;
       this.assignTasks();
       this.nunjucksOptions = {
