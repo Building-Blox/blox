@@ -122,7 +122,11 @@
         await hooks.doThemeHook(this.options, this.globalData),
         await scripts.doComponentScripts(),
         await this.doGlobalScripts(),
-        await styles.doComponents({ gulp: this.gulp }),
+        await styles.doComponents({ 
+          gulp: this.gulp,
+          source: constants.paths.components,
+          fileName: '_global-components.scss'
+        }),
         await images.doComponents({ gulp: this.gulp }),
         await images.doPartials({ gulp: this.gulp }),
         await this.doTemplates(),
